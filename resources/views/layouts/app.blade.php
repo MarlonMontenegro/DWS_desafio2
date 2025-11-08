@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Finanzas')</title>
 
-    {{-- Bootstrap 5 --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -168,7 +167,7 @@
             </div>
         @endif
 
-        {{-- Errores generales (sin tocar el mensaje específico de login) --}}
+        {{-- Errores generales  --}}
         @if($errors->any())
             @php
                 $nonLoginErrors = $errors->all();
