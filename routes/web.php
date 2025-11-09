@@ -43,10 +43,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
 */
 require __DIR__ . '/auth.php';
 
-/*
-|--------------------------------------------------------------------------
-| Fallback Route
-| Used for handling 404 errors in non-existent routes.
-|--------------------------------------------------------------------------
-*/
-// Route::fallback(fn () => abort(404));
