@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EntradaController;
 use App\Http\Controllers\SalidaController;
+use App\Http\Controllers\ReporteBalanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,12 +35,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Salidas CRUD
     Route::resource('salidas', SalidaController::class)->except(['show']);
+
+    // Balance Report (visualización y descarga PDF)
+    Route::get('/balance', [ReporteBalanceController::class, 'index'])->name('balance.index');
+    Route::get('/balance/pdf', [ReporteBalanceController::class, 'pdf'])->name('balance.pdf');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Auth Scaffolding
+| Auth Scaffolding (Breeze)
 |--------------------------------------------------------------------------
 */
 require __DIR__ . '/auth.php';
-
