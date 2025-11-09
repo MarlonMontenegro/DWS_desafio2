@@ -1,22 +1,52 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EntradaController;
 use App\Http\Controllers\SalidaController;
-use App\Http\Controllers\ReporteBalanceController;
 
-Route::get('/', fn() => view('welcome'));
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+Route::redirect('/', '/login');
 
-// Entradas
-Route::get('/entradas', [EntradaController::class, 'index'])->name('entradas.index');
-Route::get('/entradas/create', [EntradaController::class, 'create'])->name('entradas.create');
-Route::post('/entradas', [EntradaController::class, 'store'])->name('entradas.store');
+/*
+|--------------------------------------------------------------------------
+| Authenticated & Verified Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->group(function () {
 
-// Salidas
-Route::get('/salidas', [SalidaController::class, 'index'])->name('salidas.index');
-Route::get('/salidas/create', [SalidaController::class, 'create'])->name('salidas.create');
-Route::post('/salidas', [SalidaController::class, 'store'])->name('salidas.store');
+    // Dashboard
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
 
-// Balance
-Route::get('/balance', [ReporteBalanceController::class, 'index'])->name('balance.index');
-Route::get('/balance/pdf', [ReporteBalanceController::class, 'pdf'])->name('balance.pdf');
+    // Profile Management
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+    });
+
+    // Entradas CRUD
+    Route::resource('entradas', EntradaController::class)->except(['show']);
+
+    // Salidas CRUD
+    Route::resource('salidas', SalidaController::class)->except(['show']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Auth Scaffolding
+|--------------------------------------------------------------------------
+*/
+require __DIR__ . '/auth.php';
+
+/*
+|--------------------------------------------------------------------------
+| Fallback Route
+| Used for handling 404 errors in non-existent routes.
+|--------------------------------------------------------------------------
+*/
+// Route::fallback(fn () => abort(404));
